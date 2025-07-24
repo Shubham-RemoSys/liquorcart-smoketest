@@ -1,0 +1,37 @@
+{    
+    "testurl":"https://qa.liquorcart.com/remo/",
+    "logourl":"https://qa.liquorcart.com/media/logo/default/liquorcart-logo.png",
+    "username": "shubham.sri@remo-sys.com",
+    "password": "Welcome@123",
+  
+    "isliquor":true,
+    "productInfo":{
+        "itemName":"Absinthe Absente",
+        "itemCategory":"Liquor",
+        "isliquor":true,
+        "invalidItemName":"axy"
+    },
+    "guest": {
+        "EmailId": "shubham.sri@remo-sys.com",
+        "PhoneNo": "9543717220",
+        "FirstName": "Shubham",
+        "LastName": "S",
+        "StreetAddress": "25976 Fitzroy St",
+        "city": "Westlake",
+        "zip": "44145"
+    },
+    "cardDetails":{
+        "customerName": "Shubham",
+        "cardNumber" :"4111111111111111",
+        "date": "02",
+        "year": "2026",
+        "cvv": "123"
+    },
+    "appConstants":{
+        "deliveryFee" : "$15.75",
+        "miniCartLoadAPIpath":"/customer/section/load/",
+        "ageLimitPopup":"You must be 21+ to proceed",
+        "noData":"No Data",
+        "titleShippingPage":"Checkout"
+    }
+}

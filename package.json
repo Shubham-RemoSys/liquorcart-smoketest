@@ -1,0 +1,22 @@
+{
+  "name": "qa.liquorcart.remoenv",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "npx playwright test",
+    "testUI": "npx playwright test --ui",
+    "list": "npx playwright test --list",
+    "record": "npx playwright codegen demo.playwright.dev/todomvc",
+    "login":"npx playwright test --grep @login ",
+    "guest":"npx playwright test --grep @guest "
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "devDependencies": {
+    "@playwright/test": "^1.53.2",
+    "@types/node": "^24.0.12"
+  }
+}
