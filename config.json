@@ -5,11 +5,23 @@
     "password": "Welcome@123",
   
     "isliquor":true,
+    "loginInfo":{
+        "username": "shubham.sri@remo-sys.com",
+        "password": "Welcome@123",
+        "invalidUsername":"Tester.com",
+        "unregisteredEmail":"test@gmail.com",
+        "invalidPassword":"Testing@123"
+    },
     "productInfo":{
         "itemName":"Absinthe Absente",
         "itemCategory":"Liquor",
         "isliquor":true,
-        "invalidItemName":"axy"
+        "invalidItemName":"axy",
+        "sku":"021059221758",
+        "skuItemName":"1800 Reposado",
+        "autoSuggestItem":"absol",
+        "twoChar":"be",
+        "singleChar":"e"
     },
     "guest": {
         "EmailId": "shubham.sri@remo-sys.com",
@@ -32,6 +44,10 @@
         "miniCartLoadAPIpath":"/customer/section/load/",
         "ageLimitPopup":"You must be 21+ to proceed",
         "noData":"No Data",
-        "titleShippingPage":"Checkout"
+        "titleShippingPage":"Checkout",
+        "titleLoginPage":"Customer Login",
+        "invalidEmailError":"Please enter a valid email address (Ex: johndoe@domain.com).",
+        "unregisteredEmailError":"The account sign-in was incorrect or your account is disabled temporarily. Please wait and try again later.",
+        "noSearchResult":"Your search returned no results."
     }
 }
