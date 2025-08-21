@@ -17,6 +17,9 @@ export class HomePage {
   private readonly hamburgerPanel: Locator;
   private readonly logoSection: Locator;
   private readonly logoImg: Locator;
+  private readonly stateCursorActive: Locator;
+  private readonly stateSearchIcon: Locator;
+  private readonly autoSuggestionList: Locator;
 
   constructor(page: Page) {
     this.page = page;
@@ -41,6 +44,11 @@ export class HomePage {
       name: "Search",
       disabled: false,
     });
+    this.stateSearchIcon = page.getByRole("button", {
+      name: "Search",
+    });
+    this.stateCursorActive = page.locator(".label.active");
+    this.autoSuggestionList = page.getByRole("listbox").locator("li");
   }
 
   /**
@@ -231,5 +239,120 @@ export class HomePage {
       await this.signOutBtn.click();
       await this.signInButton.waitFor({ state: "visible", timeout: 15 * 1000 });
     });
+  }
+
+  /**
+   * Function to get the locator of the Hamburger menu button displayed on the Home Page
+   * @returns Promise<Locator>
+   */
+  async getLocator_HamburgerButton(): Promise<Locator> {
+    await this.hamburgerMenuBtn.waitFor({
+      state: "visible",
+      timeout: 15 * 1000,
+    });
+    return await this.hamburgerMenuBtn;
+  }
+
+  /**
+   * This function enters the product name to the search input box to test the autosuggestion functionality
+   * @param productName
+   */
+  async autoSuggest_searchProduct(productName: string): Promise<void> {
+    await test.step("Enter the product name into the search input box to test autosuggestion", async () => {
+      await this.searchInputBox.pressSequentially(productName, {
+        delay: 600,
+      });
+      //Wait for search icon to be enabled
+      await this.enabledSearchIcon.waitFor({ timeout: 15 * 1000 });
+    });
+  }
+
+  /**
+   * Click inside the search input box to search any product
+   * @returns Promise<void>
+   */
+  async clickSearchInputBox(): Promise<void> {
+    await test.step("Click inside the search input box", async () => {
+      await this.searchInputBox.click();
+    });
+  }
+
+  /**
+   * This will enter two characters in the search input box
+   *  @param productName
+   * @returns Promise<void>
+   */
+  async enterTwoChar_SearchItemBox(productName: string): Promise<void> {
+    await test.step("Enter two characters in the search input box", async () => {
+      await this.searchInputBox.pressSequentially(productName, {
+        delay: 400,
+      });
+    });
+  }
+
+  /**
+   * Get Locator of the current state of the search icon inside search input box
+   * @returns Promise<Locator>
+   */
+  async getLocator_stateSearchIcon(): Promise<Locator> {
+    return await this.stateSearchIcon;
+  }
+
+  /**
+   * Get Locator of the active state of the cursor when user performs click inside the search input box
+   * @returns Promise<Locator>
+   */
+  async getLocator_cursorActive(): Promise<Locator> {
+    await this.stateCursorActive.first().waitFor({
+      state: "visible",
+      timeout: 7 * 1000,
+    });
+    return await this.stateCursorActive;
+  }
+
+  /**
+   * This will enter single characters in the search input box
+   *  @param productName
+   * @returns Promise<void>
+   */
+  async enterSingleChar_SearchItemBox(productName: string): Promise<void> {
+    await test.step("Enter single character in the search input box", async () => {
+      await this.searchInputBox.pressSequentially(productName, {
+        delay: 400,
+      });
+    });
+  }
+
+  /**
+   * Function to click on the search icon inside the search input box
+   * @returns Promise<void>
+   */
+  async click_SearchIcon_SearchInputBox(): Promise<void> {
+    await test.step("Click on the search icon inside the search input box once it's enabled", async () => {
+      await this.enabledSearchIcon.click();
+    });
+  }
+  /**
+   * Function to click on the SignIn button
+   * @returns Promise<void>
+   */
+  async clickSignInButton(): Promise<void> {
+    await test.step("Click on SignIn button", async () => {
+      await this.signInButton.waitFor({ state: "visible", timeout: 7 * 1000 });
+      await this.signInButton.click();
+    });
+  }
+
+  /**
+   * Get the locator of the Search Item box autosuggestion list
+   * @returns Promise<Locator>
+   */
+  async getLocator_autoSuggestionsList(): Promise<Locator> {
+    await this.page.waitForTimeout(2000);
+    await this.autoSuggestionList.first().waitFor({
+      state: "visible",
+      timeout: 10 * 1000,
+    });
+    return await this.autoSuggestionList;
   }
 }

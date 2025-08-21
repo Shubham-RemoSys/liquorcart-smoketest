@@ -1,4 +1,5 @@
 import { Locator, Page, test } from "@playwright/test";
+
 //Loads the json data
 const configData = require("../config.json");
 
@@ -13,6 +14,10 @@ export class LoginPage {
   private readonly password: Locator;
   private readonly loginButton: Locator;
   private readonly acceptButtonSelector: string;
+  private readonly emailError: Locator;
+  private readonly showpassword: Locator;
+  private readonly passwordVisibility: Locator;
+  private readonly unregisteredAccErrorMsg: Locator;
 
   constructor(page: Page) {
     this.page = page;
@@ -21,6 +26,13 @@ export class LoginPage {
     this.password = page.getByRole("textbox", { name: "Password" });
     this.loginButton = page.getByRole("button", { name: "Sign In" });
     this.acceptButtonSelector = ".m-accept";
+    this.emailError = page.locator("#email-error");
+    this.showpassword = page.locator("#show-password");
+    this.passwordVisibility = page.locator("[type='text']").first();
+    this.unregisteredAccErrorMsg = page
+      .getByRole("alert")
+      .filter({ hasText: "The account sign-in was" })
+      .first();
   }
 
   /**
@@ -60,6 +72,7 @@ export class LoginPage {
    */
   async clickSignInButton(): Promise<void> {
     await test.step("Click on SignIn button", async () => {
+      await this.signInButton.waitFor({ state: "visible", timeout: 10 * 1000 });
       await this.signInButton.click();
     });
   }
@@ -88,5 +101,77 @@ export class LoginPage {
     await this.launchApp();
     await this.clickSignInButton();
     await this.login(username, password);
+  }
+
+  /**
+   * Get the title of the login page
+   * @returns Promise<String>
+   */
+  async getTitleLoginPage(): Promise<String> {
+    await test.step("Get the title of the 'Login Page'", async () => {
+      await this.page.waitForLoadState("domcontentloaded", {
+        timeout: 10 * 1000,
+      });
+    });
+    return await this.page.title();
+  }
+  /**
+   * Function to capture the error when any invalid email/username is entered
+   * @returns Promise<String>
+   */
+  async getInvalidEmailError(): Promise<String> {
+    await this.emailError.waitFor({ state: "visible", timeout: 7 * 1000 });
+    return await this.emailError.innerText();
+  }
+  /**
+   * Enter the email/username
+   * @param username
+   * @returns Promise<void>
+   */
+  async enterEmail(username: string): Promise<void> {
+    await test.step("Enter the email", async () => {
+      await this.username.fill(username);
+    });
+  }
+
+  /**
+   * Enter the password
+   * @param password
+   * @returns Promise<void>
+   */
+  async enterPassword(password: string): Promise<void> {
+    await test.step("Enter the password", async () => {
+      await this.password.fill(password);
+    });
+  }
+
+  /**
+   * Click on the 'Show Password' checkbox to make the password visible to the user
+   * @requires Promise<void>
+   */
+  async clickCheckbox_showpassword(): Promise<void> {
+    await test.step("Click on the 'Show Password' checkbox", async () => {
+      await this.showpassword.click();
+    });
+  }
+
+  /**
+   * Get locator of the password visibility
+   * @returns Promise<Locator>
+   */
+  async getLocator_passwordVisibility(): Promise<Locator> {
+    return await this.passwordVisibility;
+  }
+
+  /**
+   * Get the error message when an unregistered user attempts to login.
+   * @returns Promise<string>
+   */
+  async getErrorMessage_unregisteredAccount(): Promise<string> {
+    await this.unregisteredAccErrorMsg.waitFor({
+      state: "visible",
+      timeout: 7 * 1000,
+    });
+    return await this.unregisteredAccErrorMsg.innerText();
   }
 }

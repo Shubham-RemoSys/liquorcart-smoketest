@@ -1,6 +1,6 @@
 ## Liquor Cart - Smoke Test Suite
 
-This Smoke Test Suite built using Playwright to verify that the basic functionalities of the Liquor Cart web application work correctly after each deployment. It acts as a fast checkpoint before full-scale regression testing.
+This Liquor Cart Test Suite built using Playwright to verify that the basic along with End-To-End test scenarios the Liquor Cart web application work correctly after each deployment. It acts as a fast checkpoint before full-scale regression testing.
 
 ## Purpose
 
@@ -8,7 +8,7 @@ This suite ensures basic use cases such as **login, add to cart, e2e Delivery or
 
 ## How to Run Tests
 
-Run all smoke tests -
+Run all tests -
 
 ```bash
 npx playwright test
@@ -18,10 +18,11 @@ npx playwright test
 
 The test suite is logically divided into two groups using **tags** for flexible execution:
 
-| Tag      | Description                             | Requires Login |
-| -------- | --------------------------------------- | -------------- |
-| `@login` | Validates features requiring user login | Yes            |
-| `@guest` | Validates features accessible to guests | No             |
+| Tag      | Description                                  | Requires Login |
+| -------- | -------------------------------------------- | -------------- |
+| `@login` | Validates features requiring user login      | Yes            |
+| `@guest` | Validates features accessible to guests      | No             |
+| `@e2e`   | Validates complete end-to-end test scenarios | Yes            |
 
 ## Run Tests by Tag
 
@@ -35,6 +36,12 @@ The test suite is logically divided into two groups using **tags** for flexible 
 
 ```bash
   npx playwright test --grep @guest
+```
+
+- Run tests @e2e tag:
+
+```bash
+  npx playwright test --grep @e2e
 ```
 
 ## Configuration Management with config.json

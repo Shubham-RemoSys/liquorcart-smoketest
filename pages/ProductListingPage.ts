@@ -1,4 +1,5 @@
 import { test, Locator, Page, expect } from "@playwright/test";
+import { promises } from "dns";
 
 /**
  * This class contains all the locators and actions of the Product Listing Page
@@ -14,6 +15,9 @@ export class ProductListingPage {
   private readonly productsListSelector: string;
   private readonly productCardList: Locator;
   private readonly noProductFoundText: Locator;
+  private readonly productGrid: Locator;
+  private readonly productNameLink_SKUsearch: Locator;
+  private readonly productSearchedCount_SKUsearch: Locator;
 
   constructor(page: Page) {
     this.page = page;
@@ -39,6 +43,9 @@ export class ProductListingPage {
     this.noProductFoundText = page.getByText(
       "Your search returned no results."
     );
+    this.productGrid = page.locator(".products-grid");
+    this.productNameLink_SKUsearch = page.locator(".product-item-link");
+    this.productSearchedCount_SKUsearch = page.locator(".toolbar-number");
   }
 
   /**
@@ -83,21 +90,21 @@ export class ProductListingPage {
     );
   }
   /**
-   *  Waait for Adding/Added status dislayed on the Add To Cart button
+   *  Wait for Adding/Added status dislayed on the Add To Cart button
    * @returns Promise<void>
    */
   async waitForAdding_AddedStatus(): Promise<void> {
     try {
       await this.addingStatus.waitFor({
         state: "visible",
-        timeout: 5000,
+        timeout: 500,
       });
       await this.addedStatus.waitFor({
         state: "visible",
-        timeout: 5000,
+        timeout: 500,
       });
     } catch (error) {
-      console.log("Adding/Added Status is not displayed");
+      console.log("Waited for Adding/Added Status...");
     }
   }
   /**
@@ -145,7 +152,10 @@ export class ProductListingPage {
   async navigateToShoppingCartFromNotification(): Promise<void> {
     await test.step("Navigate to the shopping cart page via notification link", async () => {
       // Wait for the link to be attached to the DOM (i.e., appears in the notification)
-      await this.cartLinkInNotification.waitFor({ state: "attached" });
+      await this.cartLinkInNotification.waitFor({
+        state: "visible",
+        timeout: 5000,
+      });
       // Click on the shopping cart link to navigate to the cart page
       await this.cartLinkInNotification.click();
     });
@@ -164,7 +174,11 @@ export class ProductListingPage {
    * @returns Promise<Locator>
    */
   async getLocator_noProductFoundText(): Promise<Locator> {
-    return this.noProductFoundText;
+    await this.noProductFoundText.waitFor({
+      state: "visible",
+      timeout: 7 * 1000,
+    });
+    return await this.noProductFoundText;
   }
   /**
    *  This function will click on the NEXT button
@@ -174,5 +188,40 @@ export class ProductListingPage {
     await test.step("Click the Next button to go to the next page.", async () => {
       await this.nextPageButton.click();
     });
+  }
+
+  /**
+   * Get the locator of the Product list/Grid - card which contains all the info when navigated to the search results
+   * @returns  Promise<Locator>
+   */
+  async getLocator_productGrid(): Promise<Locator> {
+    await this.productGrid
+      .first()
+      .waitFor({ state: "visible", timeout: 7 * 1000 });
+    return await this.productGrid;
+  }
+
+  /**
+   * Get Locator for the product name when SKU is searched
+   * @returns Promise<Locator>
+   */
+  async getLocator_productNameLink_forSKUsearch(): Promise<Locator> {
+    await this.productNameLink_SKUsearch
+      .first()
+      .waitFor({ state: "visible", timeout: 7 * 1000 });
+
+    return await this.productNameLink_SKUsearch;
+  }
+
+  /**
+   * Get locator of the result count if the searched SKU
+   * @returns Promise<Locator>
+   */
+  async getLocator_productSearchedCount_SKUsearch(): Promise<Locator> {
+    await this.productSearchedCount_SKUsearch
+      .first()
+      .waitFor({ state: "visible", timeout: 7 * 1000 });
+
+    return await this.productSearchedCount_SKUsearch;
   }
 }

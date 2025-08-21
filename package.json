@@ -8,8 +8,9 @@
     "testUI": "npx playwright test --ui",
     "list": "npx playwright test --list",
     "record": "npx playwright codegen demo.playwright.dev/todomvc",
-    "login":"npx playwright test --grep @login ",
-    "guest":"npx playwright test --grep @guest "
+    "login":"npx playwright test --grep @login",
+    "guest":"npx playwright test --grep @guest",
+    "e2e":"npx playwright test --grep @e2e"
   },
   "keywords": [],
   "author": "",
