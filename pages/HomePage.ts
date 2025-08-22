@@ -20,7 +20,11 @@ export class HomePage {
   private readonly stateCursorActive: Locator;
   private readonly stateSearchIcon: Locator;
   private readonly autoSuggestionList: Locator;
-
+  private readonly deliveryHoursModal: Locator;
+  private readonly pickupHoursModal: Locator;
+  private readonly productCategories_menuList: Locator;
+  private readonly liquorSubcategory_menuList: Locator;
+  private readonly liquorCategory_menuList: Locator;
   constructor(page: Page) {
     this.page = page;
 
@@ -49,6 +53,23 @@ export class HomePage {
     });
     this.stateCursorActive = page.locator(".label.active");
     this.autoSuggestionList = page.getByRole("listbox").locator("li");
+    this.deliveryHoursModal = page.getByRole("heading", {
+      name: "Delivery Hours",
+    });
+    this.pickupHoursModal = page.getByRole("heading", {
+      name: "Pickup Hours",
+    });
+    this.productCategories_menuList = page.locator(
+      "ul.nav-desktop a.level-top"
+    );
+    this.liquorSubcategory_menuList = page
+      .locator(".nav-desktop.sticker.hover >li")
+      .filter({ hasText: "LIQUOR" })
+      .locator("li");
+
+    this.liquorCategory_menuList = page
+      .locator("ul.nav-desktop a.level-top")
+      .filter({ hasText: "LIQUOR" });
   }
 
   /**
@@ -354,5 +375,136 @@ export class HomePage {
       timeout: 10 * 1000,
     });
     return await this.autoSuggestionList;
+  }
+  /**
+   * Function to click on Delivery Hours
+   * @returns Pomise<void>
+   */
+  async clickDeliveryHours(): Promise<void> {
+    await test.step("Click on 'Delivery Hours'", async () => {
+      await this.deliveryHours.click();
+    });
+  }
+
+  /**
+   * Function to click on the Liquor Category in the Hamburger Menu
+   */
+  async clickLiquorCategory_HamburgerMenu(): Promise<void> {
+    await this.liquorCategory_menuList.click();
+  }
+
+  /**
+   * Get Locator of the Delivery Hours Modal where the store delivery time is reflected
+   * @returns Promise<Locator>
+   */
+  async getLocator_deliveryHoursModal(): Promise<Locator> {
+    return this.deliveryHoursModal;
+  }
+
+  /**
+   * Function to click on Pickup Hours
+   * @returns Pomise<void>
+   */
+  async clickPickupHours(): Promise<void> {
+    await test.step("Click on 'Pickup Hours'", async () => {
+      await this.pickupHours.click();
+    });
+  }
+
+  /**
+   * Function to click on the subcategory based on the given category & subcategory name
+   * using dynamic locator
+   * @param categoryName
+   * @param subcategoryName
+   * @returns Promise<void>
+   */
+  async clickSubcategory_HamburgerMenuList(
+    categoryName: string,
+    subcategoryName: string
+  ): Promise<void> {
+    await this.page
+      .locator(".nav-desktop.sticker.hover >li")
+      .filter({ hasText: categoryName })
+      .locator("li")
+      .filter({ hasText: subcategoryName })
+      .click();
+  }
+
+  /**
+   * Function to click on the All links at the bottom of the categories.
+   * @param categoryName
+   * @returns Promise<void>
+   */
+  async clickOnAllLink_HamburgerMenuList(categoryName: string): Promise<void> {
+    await this.page
+      .locator(".nav-desktop.sticker.hover >li")
+      .filter({ hasText: categoryName })
+      .locator("li")
+      .filter({ hasText: "All " + categoryName })
+      .click();
+  }
+
+  /**
+   * Get Locator of the Pickup Hours Modal where the store pickup time is reflected
+   * @returns Promise<Locator>
+   */
+  async getLocator_pickupHoursModal(): Promise<Locator> {
+    return this.pickupHoursModal;
+  }
+
+  /**
+   * Get locator of the Product categories reflected under the Hamburger Menu List
+   * @returns Promise<Locator>
+   */
+  async getLocator_productCategories_menuList(): Promise<Locator> {
+    return await this.productCategories_menuList;
+  }
+
+  /**
+   * Dynamic locator for the subcategory list based on the Category name parameter
+   * @param categoryName
+   * @returns Promise<Locator>
+   */
+  async getLocatorDynamic_productSubcategoryMenuList(
+    categoryName: string
+  ): Promise<Locator> {
+    return await this.page
+      .locator(".nav-desktop.sticker.hover >li")
+      .filter({ hasText: categoryName })
+      .locator("li");
+  }
+
+  /**
+   * Dynamic locator for the Delivery Hours Business Days
+   * @param day
+   * @returns
+   */
+  async getLocatorDynamic_deliveryBusinessDays(day: string): Promise<Locator> {
+    const dayTag = await this.page.locator(
+      `#business-hour-details p:has-text("${day}")`
+    );
+    await dayTag.waitFor({ state: "visible", timeout: 7000 });
+    return await dayTag;
+  }
+
+  /**
+   * Dynamic locator for the Pickup Hours Business Days
+   * @param day
+   * @returns
+   */
+  async getLocatorDynamic_pickupBusinessDays(day: string): Promise<Locator> {
+    const dayTag = await this.page.locator(
+      `#pickup-business-hour-details p:has-text("${day}")`
+    );
+    await dayTag.waitFor({ state: "visible", timeout: 7000 });
+    return await dayTag;
+  }
+
+  /**
+   * Get the locator for the subcategory list of the Liquor
+   * @returns Promise<Locator>
+   */
+  async getLocator_liquorSubcategory_menuList(): Promise<Locator> {
+    return this.liquorSubcategory_menuList;
   }
 }

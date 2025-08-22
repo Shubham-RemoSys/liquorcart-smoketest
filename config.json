@@ -48,6 +48,20 @@
         "titleLoginPage":"Customer Login",
         "invalidEmailError":"Please enter a valid email address (Ex: johndoe@domain.com).",
         "unregisteredEmailError":"The account sign-in was incorrect or your account is disabled temporarily. Please wait and try again later.",
-        "noSearchResult":"Your search returned no results."
+        "noSearchResult":"Your search returned no results.",
+        "deliveryHoursModal":"Delivery Hours",
+        "pickupHoursModal":"Pickup Hours",
+        "days": ["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday"],
+        "titleLiquorCategoryPage":"Liquor",
+        "titleBeerCategoryPage":"Beer",
+        "titleVodkaSubCategoryPage":"Vodka - Liquor",
+        "titleAllBeerSubCategoryPage":"Beer"
+
+    },
+    "hamburgerMenuData":{
+        "productCategoryList": ["POP", "LIQUOR", "WINE", "BEER"],
+        "liquorCategory":"LIQUOR",
+        "beerCategory":"BEER",
+        "liquorSubcategoryVodka":"VODKA"
     }
 }
