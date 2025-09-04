@@ -18,6 +18,7 @@ export class ProductListingPage {
   private readonly productGrid: Locator;
   private readonly productNameLink_SKUsearch: Locator;
   private readonly productSearchedCount_SKUsearch: Locator;
+  private readonly subcategoryList_FilterByCategory: Locator;
 
   constructor(page: Page) {
     this.page = page;
@@ -46,6 +47,9 @@ export class ProductListingPage {
     this.productGrid = page.locator(".products-grid");
     this.productNameLink_SKUsearch = page.locator(".product-item-link");
     this.productSearchedCount_SKUsearch = page.locator(".toolbar-number");
+    this.subcategoryList_FilterByCategory = page.locator(
+      ".filter-options-content a > span"
+    );
   }
 
   /**
@@ -223,5 +227,25 @@ export class ProductListingPage {
       .waitFor({ state: "visible", timeout: 7 * 1000 });
 
     return await this.productSearchedCount_SKUsearch;
+  }
+  /**
+   * Get the title of the page
+   * @returns Promise<string>
+   */
+  async getPageTitle(): Promise<string> {
+    await this.page.waitForLoadState("domcontentloaded");
+    return await this.page.title();
+  }
+
+  /**
+   * Get Locator of the subcategory list reflected below the Filter By Category section
+   * @returns Promise<Locator>
+   */
+
+  async getLocator_subcategoryList_FilterByCategory(): Promise<Locator> {
+    await this.subcategoryList_FilterByCategory
+      .first()
+      .waitFor({ state: "visible" });
+    return await this.subcategoryList_FilterByCategory;
   }
 }
