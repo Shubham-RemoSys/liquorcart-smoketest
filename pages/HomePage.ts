@@ -1,4 +1,4 @@
-import { Locator, Page, test } from "@playwright/test";
+import { Locator, Page, Selectors, test } from "@playwright/test";
 /**
  * This class contains all the locators and actions of the Home Page
  */
@@ -25,6 +25,21 @@ export class HomePage {
   private readonly productCategories_menuList: Locator;
   private readonly liquorSubcategory_menuList: Locator;
   private readonly liquorCategory_menuList: Locator;
+  private readonly shopSpirits: Locator;
+  private readonly browseByCategoryList: Locator;
+  private readonly wineBannerImg: Locator;
+  private readonly shopSpiritsBannerImg: Locator;
+  private readonly liquorCarouselSection: Locator;
+  private readonly productGrid_liquorCaraousel: Locator;
+  private readonly productNameList_liquorCaraousel: Locator;
+  private readonly addToCartBtnList_liquorCaraousel: Locator;
+  private readonly paginationNumbers_liquorCaraousel: Locator;
+  private readonly pageIndex_rightArrow: Locator;
+  private readonly pageIndex_leftArrow: Locator;
+  private readonly currentPageIndex: Locator;
+  private readonly shopWineBTN: Locator;
+  private readonly browseAllBTN: Locator;
+
   constructor(page: Page) {
     this.page = page;
 
@@ -70,6 +85,29 @@ export class HomePage {
     this.liquorCategory_menuList = page
       .locator("ul.nav-desktop a.level-top")
       .filter({ hasText: "LIQUOR" });
+
+    this.shopSpirits = page.getByRole("link", { name: "Shop Spirits" });
+    this.browseByCategoryList = page.locator(".categorieslist");
+    this.wineBannerImg = page.locator(".shopcategory .firstcat");
+    this.shopSpiritsBannerImg = page.locator(".shopcategory .secondcat");
+    this.liquorCarouselSection = page.locator("#star-products");
+    this.productGrid_liquorCaraousel = page.locator(".products-grid.row");
+    this.productNameList_liquorCaraousel =
+      this.productGrid_liquorCaraousel.locator(".prod-head");
+    this.addToCartBtnList_liquorCaraousel =
+      this.productGrid_liquorCaraousel.getByRole("button", {
+        name: "Add to Cart",
+      });
+    this.paginationNumbers_liquorCaraousel = page.locator(
+      ".items.pages-items li a.page"
+    );
+    this.pageIndex_rightArrow = page.locator(".action.next");
+    this.pageIndex_leftArrow = page.locator(".action.previous");
+    this.currentPageIndex = page.locator(
+      ".item.current strong span:last-child"
+    );
+    this.shopWineBTN = page.getByRole("button", { name: "shop wine" });
+    this.browseAllBTN = page.getByRole("link", { name: "Browse All" });
   }
 
   /**
@@ -506,5 +544,211 @@ export class HomePage {
    */
   async getLocator_liquorSubcategory_menuList(): Promise<Locator> {
     return this.liquorSubcategory_menuList;
+  }
+
+  /**
+   * Function to click on the Shop Spirits button within the embedded video on the homepage
+   * @returns Promise<void>
+   */
+  async clickShopSpiritsButton(): Promise<void> {
+    await test.step("Click on the 'Shop Spirits' button within the embedded video on the homepage", async () => {
+      await this.shopSpirits.waitFor({ state: "visible", timeout: 7 * 1000 });
+      await this.shopSpirits.click();
+    });
+  }
+  /**
+   * Function to click on the Shop Wine banner Image
+   * @returns Promise<void>
+   */
+  async clickShopWineButton_bannerImg(): Promise<void> {
+    await test.step("Click on the Shop Wine banner image", async () => {
+      await this.wineBannerImg.waitFor({ state: "visible", timeout: 7 * 1000 });
+      await this.wineBannerImg.click();
+      await this.page.waitForLoadState("domcontentloaded");
+    });
+  }
+
+  /**
+   * Function to click on the Shop Spirits banner Image
+   * @returns Promise<void>
+   */
+  async clickShopWSpiritsutton_bannerImg(): Promise<void> {
+    await test.step("Click on the Shop Spirits banner image", async () => {
+      await this.shopSpiritsBannerImg.waitFor({
+        state: "visible",
+        timeout: 7 * 1000,
+      });
+      await this.shopSpiritsBannerImg.click();
+    });
+  }
+
+  /**
+   * Function to get the title of the page
+   * @returns Promise<string>
+   */
+  async getTitle(): Promise<string> {
+    await this.page.waitForLoadState("networkidle");
+    return await this.page.title();
+  }
+
+  /**
+   * Function to select a category below the 'Browse By Category' section
+   * @param productCategory
+   * @returns Promise<void>
+   */
+  async selectCategory_BrowseByCategory(
+    productCategory: string
+  ): Promise<void> {
+    await test.step(
+      "Select the " +
+        productCategory +
+        " category from the 'Browse By Category section",
+      async () => {
+        const element = await this.browseByCategoryList.getByRole("heading", {
+          name: productCategory,
+        });
+        await element.waitFor({ state: "visible", timeout: 7 * 1000 });
+        await element.click();
+      }
+    );
+  }
+
+  /**
+   * Function to scroll till the Liquor Carousel Section
+   * @returns Promise<void>
+   */
+  async scrollToLiquorCarouselSection(): Promise<void> {
+    await test.step("Scroll to the Liquor Carousel Section", async () => {
+      await this.liquorCarouselSection.waitFor({
+        state: "visible",
+        timeout: 7 * 1000,
+      });
+      await this.liquorCarouselSection.scrollIntoViewIfNeeded();
+    });
+  }
+
+  /**
+   * Function to click on the Add To cart button for first item from the Liquor Caraousel section
+   * @returns Promise<void>
+   */
+  async addProduct_LiquorCaraousel(): Promise<void> {
+    await test.step("Click on the 'Add to Cart' button on one of the product from the Liquor Caraousel section", async () => {
+      await this.addToCartBtnList_liquorCaraousel.first().click();
+    });
+  }
+
+  /**
+   * Get locator for the product reflected under liquor caraousel section
+   * @returns  Promise<Locator>
+   */
+  async getLocator_productGrid_liquorCaraousel(): Promise<Locator> {
+    return this.productGrid_liquorCaraousel;
+  }
+  /**
+   * Get locator for the first product reflected under liquor caraousel section
+   * @returns  Promise<Locator>
+   */
+  async getLocator_productNameList_liquorCaraousel(): Promise<Locator> {
+    return this.productNameList_liquorCaraousel;
+  }
+  /**
+   * Get locator for Add To Cart buttons reflected under liquor caraousel section for the products
+   * @returns  Promise<Locator>
+   */
+  async getLocator_addToCartBtnList_liquorCaraousel(): Promise<Locator> {
+    return this.addToCartBtnList_liquorCaraousel;
+  }
+  /**
+   * Get locator for page navigation right arrow key reflected under liquor caraousel section for the pagination
+   * @returns Promise<Locator>
+   */
+  async getLocator_pageIndex_rightArrow(): Promise<Locator> {
+    return this.pageIndex_rightArrow;
+  }
+
+  /**
+   * Get locator for page numbers other than the selected one reflected under liquor caraousel section for the pagination
+   * @returns Promise<Locator>
+   */
+  async getLocator_paginationNumbers_liquorCaraousel(): Promise<Locator> {
+    return this.paginationNumbers_liquorCaraousel;
+  }
+  /**
+   * Function to click on the page index arrows (Left/Right)
+   * @returns Promise<void>
+   */
+  async clickPageIndex_Arrow(arrow: "left" | "right"): Promise<void> {
+    await test.step("click on the right arrow to the right of the page number indexes", async () => {
+      if (arrow === "right") {
+        await this.pageIndex_rightArrow.waitFor({
+          state: "visible",
+          timeout: 7 * 1000,
+        });
+        const firstProductName = await this.productNameList_liquorCaraousel
+          .first()
+          .textContent();
+        await this.pageIndex_rightArrow.click();
+        //   Wait mechanism
+        await this.productNameList_liquorCaraousel
+          .first()
+          .filter({ hasText: firstProductName ?? "" })
+          .waitFor({ state: "hidden", timeout: 7 * 1000 });
+      } else if (arrow === "left") {
+        await this.pageIndex_leftArrow.waitFor({
+          state: "visible",
+          timeout: 7 * 1000,
+        });
+        const firstProductName = await this.productNameList_liquorCaraousel
+          .first()
+          .textContent();
+        await this.pageIndex_leftArrow.click();
+        //   Wait mechanism
+        await this.productNameList_liquorCaraousel
+          .first()
+          .filter({ hasText: firstProductName ?? "" })
+          .waitFor({ state: "hidden", timeout: 7 * 1000 });
+      }
+    });
+  }
+
+  /**
+   * Get locator of the index of the current page
+   * @returns Promise<Locator>
+   */
+  async getLocator_CurrentPageIndex(): Promise<Locator> {
+    await this.currentPageIndex.waitFor({
+      state: "visible",
+      timeout: 10 * 1000,
+    });
+    return this.currentPageIndex;
+  }
+
+  /**
+   * Function to click on the Shop Wine button button located under the 'Explore our vast selection of Wines' heading.
+   * @returns Promise<void>
+   */
+  async clickShopWineButton(): Promise<void> {
+    await this.shopWineBTN.waitFor({ state: "visible", timeout: 7 * 1000 });
+    await this.shopWineBTN.click();
+  }
+
+  /**
+   * Get the color of the locator
+   * @param locator
+   * @returns Promise<string>
+   */
+  async getColorOfLocator(locator: Locator): Promise<string> {
+    return await locator.evaluate((el) => getComputedStyle(el).color);
+  }
+
+  /**
+   * Function to click on the 'Browse All' button on the Home Page
+   * @returns Promise<void>
+   */
+  async clickBrowseAllButton(): Promise<void> {
+    await test.step("Click on the 'Browse All' button", async () => {
+      await this.browseAllBTN.waitFor({ state: "visible", timeout: 7 * 1000 });
+      await this.browseAllBTN.click();
+    });
   }
 }
