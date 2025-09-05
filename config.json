@@ -55,13 +55,21 @@
         "titleLiquorCategoryPage":"Liquor",
         "titleBeerCategoryPage":"Beer",
         "titleVodkaSubCategoryPage":"Vodka - Liquor",
-        "titleAllBeerSubCategoryPage":"Beer"
+        "titleAllBeerSubCategoryPage":"Beer",
+        "breadCrumbLiquor":"Liquor",
+        "titleHomePage":"Liquor Cart",
+        "urlQueryParamLiquorPage":"liquor.html",
+        "titleWineCategoryPage":"WINE",
+        "breadCrumbWine":"WINE",
+        "show24ItemsPerPage":"24",
+        "show36ItemsPerPage":"36"
 
     },
     "hamburgerMenuData":{
         "productCategoryList": ["POP", "LIQUOR", "WINE", "BEER"],
         "liquorCategory":"LIQUOR",
         "beerCategory":"BEER",
-        "liquorSubcategoryVodka":"VODKA"
+        "liquorSubcategoryVodka":"VODKA",
+        "liquorSubcategoryWhiskey":"WHISKEY"
     }
 }

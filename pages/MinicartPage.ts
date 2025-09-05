@@ -158,4 +158,13 @@ export class MinicartPage {
   async clickOkAttentionPopup(): Promise<void> {
     await this.OKbuttonAttentionBox.click();
   }
+
+  /**
+   * Get the product count reflected on the cart icon
+   * @returns Promise<string | null>
+   */
+  async getCounterNumber(): Promise<string | null> {
+    await this.minicartCount.waitFor({ state: "visible", timeout: 15 * 1000 });
+    return (await this.minicartCount.innerText())?.trim();
+  }
 }
