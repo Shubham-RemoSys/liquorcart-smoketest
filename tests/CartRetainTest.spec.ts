@@ -1,6 +1,6 @@
 import { test, expect } from "../fixtures/fixture";
 const configData = require("../config.json");
-test.describe("Cart Retain Test", { tag: "@login" }, async () => {
+test.describe("Cart Retain Test", { tag: ["@login", "@smoke"] }, async () => {
   test("It can reatin the cart items when transitioning from guest to logged-in user.", async ({
     loginPage,
     homePage,

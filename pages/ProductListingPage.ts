@@ -1,4 +1,4 @@
-import { test, Locator, Page, expect, Selectors } from "@playwright/test";
+import { test, Locator, Page, expect } from "@playwright/test";
 
 /**
  * This class contains all the locators and actions of the Product Listing Page
@@ -38,6 +38,9 @@ export class ProductListingPage {
   private readonly productCountResult_showPerPage: Locator;
   private readonly paginationNumbers: Locator;
   private readonly addToCartBTN: Locator;
+  private readonly productNames: Locator;
+  private readonly sortByArrow_setDescending: Locator;
+  private readonly sortByArrow_setAscending: Locator;
 
   constructor(page: Page) {
     this.page = page;
@@ -98,6 +101,9 @@ export class ProductListingPage {
       ".items.pages-items li span:nth-of-type(2)"
     );
     this.addToCartBTN = page.getByRole("button", { name: "Add to Cart" });
+    this.productNames = page.locator(".product .product-item-link");
+    this.sortByArrow_setDescending = page.locator(".sort-asc");
+    this.sortByArrow_setAscending = page.locator(".sort-desc");
   }
 
   /**
@@ -701,5 +707,87 @@ export class ProductListingPage {
     } else {
       return false;
     }
+  }
+
+  /**
+   * Get locator for the success notification user gets when any product is succesfully added to the cart
+   * @returns Promise<Locator>
+   */
+  async getLocator_productAddedSuccessNotification(): Promise<Locator> {
+    return this.productAddedSuccessNotification;
+  }
+
+  /**
+   * Get the price of the product based on the product name parameter
+   * @param productName 
+   * @returns Promise<number | null>
+   */
+  async getItemPrice(productName: string): Promise<number | null> {
+    const element = await this.page
+      .locator(".product-item-details")
+      .filter({ hasText: productName })
+      .locator(".price")
+      .first();
+    const text = await element.textContent();
+    return text ? parseFloat(text.trim().replace("$", "")) : null;
+  }
+
+  /**
+   * Function to add mutiple products to the cart provided via list
+   * @param productList 
+   * @returns Promise<void>
+   */
+  async addMutilpleProductFromList(productList: string[]): Promise<void> {
+    for (const productName of productList) {
+      await this.findAndAddProductToCart(productName);
+    }
+    await this.page.waitForLoadState("domcontentloaded", {
+      timeout: 10 * 1000,
+    });
+  }
+
+  /**
+   * Get the list of product names present on the page
+   * @returns Promise<string[]>
+   */
+  async getProductNames(): Promise<string[]> {
+    // Wait until at least one product is visible
+    await this.productNames.first().waitFor({ state: "visible" });
+
+    // Collect all product names
+    const names: string[] = [];
+    const count = await this.productNames.count();
+
+    for (let i = 0; i < count; i++) {
+      const text = await this.productNames.nth(i).textContent();
+      if (text) names.push(text.trim());
+    }
+    return names;
+  }
+
+  /**
+   * Function to click on Sort By Arrow button to set descending order
+   * @returns Promise<void>
+   */
+  async clickSortByArrow_setDescending(): Promise<void> {
+    await this.sortByArrow_setDescending.waitFor({
+      state: "visible",
+      timeout: 7 * 1000,
+    });
+    await this.sortByArrow_setDescending.click();
+    await this.waitForPageLoader();
+  }
+
+  /**
+   * Function to click on Sort By Arrow button to set ascending order
+   * @returns Promise<void>
+   */
+  async clickSortByArrow_setAscending(): Promise<void> {
+    await this.sortByArrow_setAscending.waitFor({
+      state: "visible",
+      timeout: 7 * 1000,
+    });
+    await this.sortByArrow_setAscending.click();
+    await this.waitForPageLoader();
   }
 }

@@ -21,7 +21,10 @@
         "skuItemName":"1800 Reposado",
         "autoSuggestItem":"absol",
         "twoChar":"be",
-        "singleChar":"e"
+        "singleChar":"e",
+        "itemName2":"1800 Reposado",
+        "itemList":["1800 AÃ±ejo","1800 Reposado","1800 Reposado With Talavera Cup Vap","1800 Silver","360 Double Chocolate Vodka 70","99 Apples Flavored Liqueur","99 Blackberries Flavored Liqueur","99 Cherries Flavored Liqueur","Aberfeldy 12","Aberlour 12 Year Old","Absinthe Absente"]
+        
     },
     "guest": {
         "EmailId": "shubham.sri@remo-sys.com",
@@ -62,7 +65,8 @@
         "titleWineCategoryPage":"WINE",
         "breadCrumbWine":"WINE",
         "show24ItemsPerPage":"24",
-        "show36ItemsPerPage":"36"
+        "show36ItemsPerPage":"36",
+        "emptyCartNotification":"You have no items in your shopping cart."
 
     },
     "hamburgerMenuData":{

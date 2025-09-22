@@ -3,7 +3,7 @@ const configData = require("../config.json");
 
 test.describe(
   "Add to Cart Test for Logged-In user",
-  { tag: "@login" },
+  { tag: ["@login", "@smoke"] },
   async () => {
     test("It can validate product addition to the cart", async ({
       loginPage,
