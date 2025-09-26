@@ -8,6 +8,7 @@ import { ShippingPage } from "../pages/ShippingPage";
 import { PaymentPage } from "../pages/PaymentPage";
 import { CheckoutSuccessPage } from "../pages/CheckoutSuccessPage";
 import { WelcomePage } from "../pages/WelcomePage";
+import { ProductPage } from "../pages/ProductPage";
 
 type pages = {
   loginPage: LoginPage;
@@ -19,6 +20,7 @@ type pages = {
   paymentPage: PaymentPage;
   checkoutSuccessPage: CheckoutSuccessPage;
   welcomePage: WelcomePage;
+  productPage: ProductPage;
 };
 
 const test = fixture.extend<pages>({
@@ -48,6 +50,9 @@ const test = fixture.extend<pages>({
   },
   welcomePage: async ({ page }, use) => {
     await use(new WelcomePage(page));
+  },
+  productPage: async ({ page }, use) => {
+    await use(new ProductPage(page));
   },
 });
 export { test, expect };

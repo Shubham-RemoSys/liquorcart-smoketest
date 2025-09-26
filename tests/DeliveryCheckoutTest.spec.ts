@@ -3,7 +3,7 @@ import { test, expect } from "../fixtures/fixture";
 const configData = require("../config.json");
 test.describe(
   "End-to-end checkout test - Delivery Order Type",
-  { tag: "@login" },
+  { tag: ["@login", "@smoke"] },
   async () => {
     test("It can checkout via Delivery Order Type", async ({
       loginPage,
